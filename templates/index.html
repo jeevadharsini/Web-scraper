@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interactive Web Scraper</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <h1>Interactive Web Scraper</h1>
+      <p class="intro">Enter a public web page and get its title, headings, paragraphs and links in one
+        tidy view. Download the results as JSON.</p>
+
+      <form id="scrape-form" class="search" novalidate>
+        <label for="url-input" class="visually-hidden">Website URL</label>
+        <input id="url-input" type="text" inputmode="url" autocomplete="off" spellcheck="false"
+               placeholder="https://example.com" required>
+        <button type="submit" id="scrape-btn" class="btn primary">Scrape</button>
+        <button type="button" id="clear-btn" class="btn ghost">Clear results</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="loading" class="loading" role="status" hidden>
+      <span class="spinner" aria-hidden="true"></span>
+      <span>Fetching and reading the page…</span>
+    </div>
+
+    <div id="message" class="message" role="alert" hidden></div>
+
+    <section id="results" hidden aria-live="polite">
+      <div class="summary">
+        <div class="summary-top">
+          <div class="summary-source">
+            <span class="label">Scraped from</span>
+            <a id="source-link" class="source-url" target="_blank" rel="noopener noreferrer nofollow"></a>
+          </div>
+          <div class="summary-actions">
+            <button type="button" id="rescrape-btn" class="btn ghost small">Re-scrape</button>
+            <button type="button" id="download-btn" class="btn primary small">Download JSON</button>
+          </div>
+        </div>
+        <dl class="stats">
+          <div><dt>Headings</dt><dd id="count-headings">0</dd></div>
+          <div><dt>Paragraphs</dt><dd id="count-paragraphs">0</dd></div>
+          <div><dt>Links</dt><dd id="count-links">0</dd></div>
+        </dl>
+        <p id="truncated-note" class="note" hidden></p>
+      </div>
+
+      <article class="card">
+        <h2>Page title</h2>
+        <p id="page-title" class="page-title"></p>
+        <p id="page-description" class="muted"></p>
+      </article>
+
+      <article class="card">
+        <h2>Headings</h2>
+        <ul id="headings-list" class="headings-list"></ul>
+      </article>
+
+      <article class="card">
+        <h2>Paragraphs</h2>
+        <ul id="paragraphs-list" class="paragraphs-list"></ul>
+      </article>
+
+      <article class="card">
+        <h2>Links</h2>
+        <ul id="links-list" class="links-list"></ul>
+      </article>
+    </section>
+
+    <details class="about">
+      <summary>Good to know before you scrape</summary>
+      <ul>
+        <li>Only public pages are fetched. Logins, CAPTCHAs and anti-bot protections are never bypassed.</li>
+        <li>The site's <code>robots.txt</code> is checked first, and a page it disallows is skipped.</li>
+        <li>Pages that build their content with JavaScript may look empty here, because this tool reads
+          only the HTML the server sends. Those pages need a browser-based approach.</li>
+        <li>Check a website's terms of use before scraping it, and keep your requests occasional.</li>
+        <li>Nothing is saved on the server. Results are kept in this page only until you clear or close it.</li>
+      </ul>
+    </details>
+  </main>
+
+  <noscript><p class="wrap">This page needs JavaScript to run the scraper.</p></noscript>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
